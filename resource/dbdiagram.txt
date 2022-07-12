@@ -1,0 +1,124 @@
+//// -- LEVEL 1
+//// -- Tables and References
+
+// Creating tables
+Table users as U {
+  id int [pk, increment] // auto-increment
+  full_name varchar
+  mobile varchar
+  email varchar
+  created_at timestamp
+  country_code int
+  currentLocationId int
+}
+Table Location as Loc{
+  locId int [pk, increment]
+  city varchar
+  pincode int
+  state varchar
+  theaterId int
+}
+
+Ref: U.currentLocationId - Loc.locId  
+
+Table Threater as THEATER {
+  thId varchar[pk]
+  locId int
+  name varchar
+  type varchar
+}
+
+Ref: THEATER.locId - Loc.locId  
+
+
+Table Screen  as SCREEN{
+  screenID varchar[pk]
+  thId varchar[FK]
+  screenType varchar
+  screenNumber varchar
+  screenname varchar
+  movieId varchar
+  eventID varchar
+  
+}
+
+Ref: THEATER.thId > SCREEN.thId 
+
+Table Seat as SEAT {
+  
+  seatId varchar[pk]
+  tierType varchar
+  screenID varchar[FK]
+  price decimal
+  type varchar
+}
+
+Ref: SCREEN.screenID > SEAT.screenID 
+
+TABLE event as EVENT{
+  eventID varchar[pk]
+  eventStartTime timestamp
+  eventEndtime timestamp
+}
+
+Ref: SCREEN.eventID > EVENT.eventID 
+Table Movie as MOVIE{
+  
+  movieId varchar[pk]
+  movieName varchar
+  movieDesc varchar
+  movieTailerlink varchar
+  movieCast varchar
+}
+
+TABLE MovieScreen as MOVIESCREEN{
+  
+  movieId varchar
+  screenID varchar
+  startTime timestamp
+  endTime timestamp
+}
+
+Ref: MOVIE.movieId > SCREEN.movieId 
+
+
+Table offer as OFFER{
+  offerID varchar
+  offerCode varchar
+  discount_percentage int
+  applied_entity varchar
+  startTime timestamp
+  endTime timestamp
+}
+
+Table ticket as TICKET{
+ticketid varchar
+usesrID varchar
+screenID varchar
+locId varchar
+seatID varchar
+eventID varchar
+numberOfSeat int
+ 
+}
+
+Ref:TICKET.eventID - EVENT.eventID
+Ref:TICKET.screenID - SCREEN.screenID
+
+Table Order as ORDER{
+  orderID varchar[pk]
+  ticketid varchar[fk]
+  amount decimal
+  status varchar
+  transactionID varchar
+  paymentMethod varchar
+  userID currentLocationId
+  discountID varchar
+  payableamount decimal
+}
+
+Ref : TICKET.ticketid - ORDER.ticketid
+Ref : ORDER.discountID - OFFER.offerCode
+
+
+// https://dbdiagram.io/d/62cbf72fcc1bc14cc592f277

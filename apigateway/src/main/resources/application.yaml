@@ -1,0 +1,37 @@
+server:
+  port: 8443
+
+zuul:
+  host:
+    connect-timeout-millis: 50000
+    socket-timeout-millis: 50000
+  routes:
+    authorizationserver:
+      sensitiveHeaders: Cookie,Set-Cookie
+      path: /access/oauth/**
+      url: http://locahost:8444/oauth/
+    theaterService:
+      sensitiveHeaders: Cookie,Set-Cookie
+      path: /theater/**
+      url: http:// localhost:9021/theater/
+      # url: http://service-resource-server-status-verification.default.cluster.local.svc:8445/status/
+    booking-service:
+      sensitiveHeaders: Cookie,Set-Cookie
+      path: /booking/**
+      url: http://localhost:9043/booking/
+    search-searvic:
+      sensitiveHeaders: Cookie,Set-Cookie
+      path: /search/**
+      url: http://localhost:9025/search/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  server:
+    port: 9090
